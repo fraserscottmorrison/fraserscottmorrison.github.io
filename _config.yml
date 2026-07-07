@@ -28,7 +28,7 @@ author:
   name: Fraser Scott Morrison
   email: fraserscottmorrison@me.com
 
-theme: jekyll-theme-primer
+theme: minima
 
 plugins:
   - jekyll-feed
@@ -43,7 +43,7 @@ kramdown:
 show_excerpts: false
 
 header_pages:
-  - SPM-Modular-Programming.md
+  - spm-modular-programming.md
 
 collections:
   articles:

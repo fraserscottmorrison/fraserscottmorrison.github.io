@@ -1,15 +1,14 @@
 ---
-title: Swift Package Manager: Modular Programming
-permalink: /SPM-Modular-Programming/
-
+layout: page
+title: Swift Package Manager - Modular Programming
+permalink: /spm-modular-programming/
+description: A modular iOS architecture based entirely on Swift Package Manager.
 ---
 
 <p align="center">
 <img width="200" height="200" alt="SPM Modular Programming"
 src="https://github.com/user-attachments/assets/ab698fd0-b1bb-45b3-8903-80160e096d7b" />
 </p>
-
-# Swift Package Manager: Modular Programming
 
 Let me frame this article with a couple of not-so-bold predictions for software development.
 First, agentic coding will be responsible for the majority of code written. This is already achievable today with an optimised development harness and spec-driven development.
@@ -154,8 +153,8 @@ Explore the setup of the thin project, feature packages and the inter-package na
 
 Included is a harness to allow agents to contribute features while adhering to the project's architectral patterns.
 
-<a href="https://github.com/fraserscottmorrison/SPM-Modular-Programming">github.com/fraserscottmorrison/SPM-Modular-Programming</a>
+<a href="https://github.com/fraserscottmorrison/spm-modular-programming">github.com/fraserscottmorrison/spm-modular-programming</a>
 
-Google provided an excellent reference Android project for a similarly modular architecture utilising gradle
+Google provides an excellent reference Android project for a similarly modular architecture utilising gradle
 
 <a href="https://github.com/android/nowinandroid">github.com/android/nowinandroid</a>
