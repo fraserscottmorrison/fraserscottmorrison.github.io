@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Swift Package Manager: Modular Programming | A scalable modular architecture approach for iOS using Swift Package Manager.</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="Swift Package Manager: Modular Programming" />
+<meta name="author" content="Fraser Scott Morrison" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A scalable modular architecture approach for iOS using Swift Package Manager." />
+<meta property="og:description" content="A scalable modular architecture approach for iOS using Swift Package Manager." />
+<link rel="canonical" href="http://localhost:4000/SPM-Modular-Programming/" />
+<meta property="og:url" content="http://localhost:4000/SPM-Modular-Programming/" />
+<meta property="og:site_name" content="Swift Package Manager: Modular Programming" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Swift Package Manager: Modular Programming" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Fraser Scott Morrison"},"description":"A scalable modular architecture approach for iOS using Swift Package Manager.","headline":"Swift Package Manager: Modular Programming","name":"Swift Package Manager: Modular Programming","url":"http://localhost:4000/SPM-Modular-Programming/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="stylesheet" href="/SPM-Modular-Programming/assets/css/style.css?v=d6a22eaea9c7d7de3f577635c91aec0e57498c7b">
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/SPM-Modular-Programming/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+  </head>
+  <body>
+    <div class="container-lg px-3 my-5 markdown-body">
+      
+      <h1><a href="http://localhost:4000/SPM-Modular-Programming/">Swift Package Manager: Modular Programming</a></h1>
+      
+
+      <p align="center">
+<img width="200" height="200" alt="SPM Modular Programming" src="https://github.com/user-attachments/assets/ab698fd0-b1bb-45b3-8903-80160e096d7b" />
+</p>
+
+<h1 id="swift-package-manager-modular-programming">Swift Package Manager: Modular Programming</h1>
+
+<p>Let me frame this article with a couple of not-so-bold predictions for software development.
+First, agentic coding will be responsible for the majority of code written. This is already achievable today with an optimised development harness and spec-driven development.</p>
+
+<p>As a consequence, I expect feature development to accelerate dramatically resulting in codebases that continue to grow in both size and complexity. This is a particular concern for enterprise applications, which are already operating at significant scale.</p>
+
+<p>To prepare for this new era of code growth, architecture must prioritise <strong>modularity, isolation, and clear dependency boundaries</strong>.</p>
+
+<p>This iOS architecture demonstrates a scalable approach that uses <strong>Swift Package Manager (SPM)</strong> as the foundation for modular application design.</p>
+
+<hr />
+
+<h1 id="core-concept">Core Concept</h1>
+
+<p>At the heart of this architecture is a simple idea:</p>
+
+<blockquote>
+  <p>The Xcode project should be almost empty — everything lives in Swift Packages.</p>
+</blockquote>
+
+<h3 id="key-principles">Key principles:</h3>
+
+<ul>
+  <li>The Xcode project is intentionally <strong>extremely thin</strong>; ideally only 10-15 lines of code</li>
+  <li>All features, shared logic, and UI components are implemented as <strong>Swift Packages</strong></li>
+  <li>Packages are fully self-contained:
+    <ul>
+      <li>Unit tests</li>
+      <li>Mocks</li>
+      <li>Even UI tests (where applicable)</li>
+    </ul>
+  </li>
+  <li>Dependency management is handled entirely through <code class="language-plaintext highlighter-rouge">Package.swift</code></li>
+</ul>
+
+<hr />
+
+<h2 id="dependency-management-rule">Dependency Management Rule</h2>
+
+<p>Avoid using:</p>
+
+<blockquote>
+  <p>Xcode → “Add Package Dependencies” UI</p>
+</blockquote>
+
+<p>Why?</p>
+
+<ul>
+  <li>It mutates the <code class="language-plaintext highlighter-rouge">.xcodeproj</code></li>
+  <li>Reduces source control clarity</li>
+  <li>Increases the likelihood of merge conflicts</li>
+</ul>
+
+<p>Instead:</p>
+
+<ul>
+  <li>Declare dependencies explicitly in each <code class="language-plaintext highlighter-rouge">Package.swift</code></li>
+  <li>Pin to exact versions of remote packages</li>
+</ul>
+
+<p>This ensures:</p>
+<ul>
+  <li>Reproducible builds</li>
+  <li>Transparent dependency graphs</li>
+  <li>CI consistency</li>
+</ul>
+
+<hr />
+
+<h1 id="project-structure">Project Structure</h1>
+
+<p>App.swift only contains enough code to hand off the the first feature package which handles the entry/launch functionality before routing to the next package</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Xcode Project
+├── App
+│   └── App.swift
+│
+├── Packages
+│   ├── Feature Packages
+│   └── ...
+│
+├── Package Dependencies
+│   ├── Common Packages (local + remote)
+│   ├── ...
+│   ├── 3rd Party Packages
+│   └── ...
+│
+├── AGENTS.md
+└── Harness/
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="feature-package-structure">Feature Package Structure</h1>
+
+<p>Each feature is fully self-contained:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Package/
+├── Package.swift
+├── Sources
+│   ├── Concurrent/
+│   │   ├── Models/ (Sendable)
+│   │   └── Service.swift (actor)
+│   │
+│   └── Main/ (UI layer)
+│       ├── Views/
+│       ├── PackageCoordinator.swift
+│       └── PackageRoute.swift
+│
+└── Tests/
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="concurrency-model">Concurrency Model</h2>
+
+<p>Swift Structured Concurrency can be difficult to adopt correctly, but when used well it provides significant benefits in predictability, correctness, and stability.
+Each feature package is split into two logical layers:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Main</code> → <code class="language-plaintext highlighter-rouge">@MainActor</code> UI layer</li>
+  <li><code class="language-plaintext highlighter-rouge">Concurrent</code> → isolated concurrency layer</li>
+</ul>
+
+<p>This provides a clear separation between:</p>
+
+<ul>
+  <li>UI logic</li>
+  <li>Asynchronous / concurrent operations</li>
+</ul>
+
+<p>Example responsibilities:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Main</code>:
+    <ul>
+      <li>Views</li>
+      <li>Coordinators</li>
+      <li>Routing logic</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Concurrent</code>:
+    <ul>
+      <li>Models (<code class="language-plaintext highlighter-rouge">Sendable</code>)</li>
+      <li>Services (<code class="language-plaintext highlighter-rouge">actor</code>)</li>
+      <li>Other actors</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="benefits">Benefits</h1>
+
+<ul>
+  <li>Scalability through clear module boundaries</li>
+  <li>Parallel development across agent-assisted teams</li>
+  <li>Faster CI by testing only affected packages</li>
+  <li>Single <code class="language-plaintext highlighter-rouge">.xcodeproj</code> (no <code class="language-plaintext highlighter-rouge">.xcworkspace</code>)</li>
+  <li>Agent-friendly, deterministic architecture</li>
+</ul>
+
+<hr />
+
+<h1 id="reference-project">Reference Project</h1>
+
+<p>Explore the setup of the thin project, feature packages and the inter-package navigation with this reference project.</p>
+
+<p>Included is a harness to allow agents to contribute features while adhering to the project’s architectral patterns.</p>
+
+<p><a href="https://github.com/fraserscottmorrison/SPM-Modular-Programming">github.com/fraserscottmorrison/SPM-Modular-Programming</a></p>
+
+<p>Google provided an excellent reference Android project for a similarly modular architecture utilising gradle</p>
+
+<p><a href="https://github.com/android/nowinandroid">github.com/android/nowinandroid</a></p>
+
+
+      
+      <div class="footer border-top border-gray-light mt-5 pt-3 text-right text-gray">
+        This site is open source. <a href="https://github.com/fraserscottmorrison/SPM-Modular-Programming/edit/gh-pages/index.markdown">Improve this page</a>.
+      </div>
+      
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/anchor-js/4.1.0/anchor.min.js" integrity="sha256-lZaRhKri35AyJSypXXs4o6OPFTbTmUoltBbDCbdzegg=" crossorigin="anonymous"></script>
+    <script>anchors.add();</script>
+  </body>
+</html>
