@@ -21,4 +21,7 @@
 title: "Swift Package Manager: Modular Programming"
 description: "A scalable modular architecture approach for iOS using Swift Package Manager."
 
+baseurl: "/SPM-Modular-Programming"
+url: "https://fraserscottmorrison.github.io"
+
 theme: jekyll-theme-primer
