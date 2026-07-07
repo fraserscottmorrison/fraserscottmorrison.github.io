@@ -18,11 +18,11 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: "Swift Package Manager: Modular Programming"
-description: "A scalable modular architecture approach for iOS using Swift Package Manager."
+title: "Fraser Scott Morrison"
+description: "iOS Architecture and Agentic Development"
 
-baseurl: "/SPM-Modular-Programming"
 url: "https://fraserscottmorrison.github.io"
+baseurl: ""
 
 author:
   name: Fraser Scott Morrison
@@ -42,7 +42,12 @@ kramdown:
 
 show_excerpts: false
 
-header_pages: []
+header_pages:
+  - SPM-Modular-Programming.md
+
+collections:
+  articles:
+    output: true
 
 # Exclude from processing.
 # The following items will not be processed, by default.

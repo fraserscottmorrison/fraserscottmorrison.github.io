@@ -1,6 +1,7 @@
 ---
-layout: home
 title: Swift Package Manager: Modular Programming
+permalink: /SPM-Modular-Programming/
+
 ---
 
 <p align="center">
