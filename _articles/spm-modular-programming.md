@@ -38,49 +38,20 @@ At the heart of this architecture is a simple idea:
 
 ---
 
-## Dependency Management Rule
-
-Avoid using:
-
-> Xcode → “Add Package Dependencies” UI
-
-Why?
-
-- It mutates the `.xcodeproj`
-- Reduces source control clarity
-- Increases the likelihood of merge conflicts
-
-Instead:
-
-- Declare dependencies explicitly in each `Package.swift`
-- Pin to exact versions of remote packages
-
-This ensures:
-- Reproducible builds
-- Transparent dependency graphs
-- CI consistency
-
----
-
 # Project Structure
 
 App.swift only contains enough code to hand off the the first feature package which handles the entry/launch functionality before routing to the next package
 
 ```text
 Xcode Project
-├── App
+├── App/
 │   └── App.swift
-│
-├── Packages
-│   ├── Feature Packages
+├── Feature Packages/ (local SPM)
 │   └── ...
-│
-├── Package Dependencies
-│   ├── Common Packages (local + remote)
-│   ├── ...
-│   ├── 3rd Party Packages
+├── Shared Packages/ (local or remote SPM)
 │   └── ...
-│
+├── Package Dependencies/ (3rd party SPM)
+│   └── ...
 ├── AGENTS.md
 └── Harness/
 ```
@@ -109,9 +80,15 @@ Package/
 
 ---
 
+## Harness
+
+An harness is essential to accurate agentic contributions. The reference project include agentic harness documentation optimised for agents to accurately contribute features. As your project grows the harness must be maintained and optimised to remain effective
+
+---
+
 ## Concurrency Model
 
-Swift Structured Concurrency can be difficult to adopt correctly, but when used well it provides significant benefits in predictability, correctness, and stability.
+Swift Structured Concurrency can be difficult to adopt correctly, but when used well it provides significant benefits in predictability, stability and UI responsiveness.
 Each feature package is split into two logical layers:
 
 - `Main` → `@MainActor` UI layer
@@ -130,8 +107,8 @@ Example responsibilities:
   - Routing logic
 
 - `Concurrent`:
-  - Models (`Sendable`)
   - Services (`actor`)
+  - Models (`Sendable`)
   - Other actors
 
 ---
@@ -143,6 +120,30 @@ Example responsibilities:
 - Faster CI by testing only affected packages  
 - Single `.xcodeproj` (no `.xcworkspace`)  
 - Agent-friendly, deterministic architecture  
+
+---
+
+## Dependency Management Recommendation
+
+Avoid using:
+
+> Xcode → “Add Package Dependencies” UI
+
+Why?
+
+- It mutates the `.xcodeproj`
+- Reduces source control clarity
+- Increases the likelihood of merge conflicts
+
+Instead:
+
+- Declare dependencies explicitly in each `Package.swift`
+- Pin to exact versions of remote packages
+
+This ensures:
+- Reproducible builds
+- Transparent dependency graphs
+- CI consistency
 
 ---
 
