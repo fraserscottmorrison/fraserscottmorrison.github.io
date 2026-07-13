@@ -6,7 +6,7 @@ description: A modular iOS architecture based entirely on Swift Package Manager.
 ---
 
 <p align="center">
-<img width="200" height="200" alt="SPM Modular Programming" src="https://github.com/user-attachments/assets/83a9b5ae-9482-426e-b48a-6521c1de245f" />
+<img width="200" height="200" alt="SPM Modular Programming" src="https://github.com/user-attachments/assets/1ee09793-db24-4b15-ad2c-6a4ae4c57a0b" />
 </p>
 
 Let me frame this article with a couple of not-so-bold predictions for software development.
