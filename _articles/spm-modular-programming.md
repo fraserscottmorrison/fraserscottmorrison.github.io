@@ -156,10 +156,9 @@ Included is a harness to allow agents to contribute features while adhering to t
 <a href="https://github.com/fraserscottmorrison/spm-modular-programming">github.com/fraserscottmorrison/spm-modular-programming</a>
 
 <video width="320" height="240" controls loop="" muted="" autoplay="">
-    <source src="https://github.com/user-attachments/assets/dfa8d351-b7d3-4975-b3f2-a8ffef729631" />
+    <source src="https://github.com/user-attachments/assets/c88de97b-16a3-45b0-bc07-78c12628c2a9" />
 </video>
 
-https://github.com/user-attachments/assets/dfa8d351-b7d3-4975-b3f2-a8ffef729631
 
 
 
