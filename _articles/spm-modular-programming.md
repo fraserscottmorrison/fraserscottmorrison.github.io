@@ -159,13 +159,6 @@ Included is a harness to allow agents to contribute features while adhering to t
     <source src="https://github.com/user-attachments/assets/c88de97b-16a3-45b0-bc07-78c12628c2a9" />
 </video>
 
-
-
-
-https://github.com/user-attachments/assets/c88de97b-16a3-45b0-bc07-78c12628c2a9
-
-
-
 Google provides an excellent reference Android project for a similarly modular architecture utilising gradle
 
 <a href="https://github.com/android/nowinandroid">github.com/android/nowinandroid</a>
