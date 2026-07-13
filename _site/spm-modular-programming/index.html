@@ -14,11 +14,11 @@
 <meta property="og:url" content="http://localhost:4000/spm-modular-programming/" />
 <meta property="og:site_name" content="Fraser Scott Morrison" />
 <meta property="og:type" content="article" />
-<meta property="article:published_time" content="2026-07-08T19:20:50+12:00" />
+<meta property="article:published_time" content="2026-07-13T18:55:27+12:00" />
 <meta name="twitter:card" content="summary" />
 <meta property="twitter:title" content="Swift Package Manager - Modular Programming" />
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Fraser Scott Morrison"},"dateModified":"2026-07-08T19:20:50+12:00","datePublished":"2026-07-08T19:20:50+12:00","description":"A modular iOS architecture based entirely on Swift Package Manager.","headline":"Swift Package Manager - Modular Programming","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/spm-modular-programming/"},"url":"http://localhost:4000/spm-modular-programming/"}</script>
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Fraser Scott Morrison"},"dateModified":"2026-07-13T18:55:27+12:00","datePublished":"2026-07-13T18:55:27+12:00","description":"A modular iOS architecture based entirely on Swift Package Manager.","headline":"Swift Package Manager - Modular Programming","mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/spm-modular-programming/"},"url":"http://localhost:4000/spm-modular-programming/"}</script>
 <!-- End Jekyll SEO tag -->
 <link rel="stylesheet" href="/assets/main.css"><link type="application/atom+xml" rel="alternate" href="http://localhost:4000/feed.xml" title="Fraser Scott Morrison" /></head>
 <body><header class="site-header">
@@ -40,7 +40,7 @@
 
   <div class="post-content">
     <p align="center">
-<img width="200" height="200" alt="SPM Modular Programming" src="https://github.com/user-attachments/assets/83a9b5ae-9482-426e-b48a-6521c1de245f" />
+<img width="200" height="200" alt="SPM Modular Programming" src="https://github.com/user-attachments/assets/1ee09793-db24-4b15-ad2c-6a4ae4c57a0b" />
 </p>
 
 <p>Let me frame this article with a couple of not-so-bold predictions for software development.
@@ -79,7 +79,103 @@ First, agentic coding will be responsible for the majority of code written. This
 
 <hr />
 
-<h2 id="dependency-management-rule">Dependency Management Rule</h2>
+<h1 id="project-structure">Project Structure</h1>
+
+<p>App.swift only contains enough code to hand off the the first feature package which handles the entry/launch functionality before routing to the next package</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Xcode Project
+├── App/
+│   └── App.swift
+├── Feature Packages/ (local SPM)
+│   └── ...
+├── Shared Packages/ (local or remote SPM)
+│   └── ...
+├── Package Dependencies/ (3rd party SPM)
+│   └── ...
+├── AGENTS.md
+└── Harness/
+</code></pre></div></div>
+
+<hr />
+
+<h1 id="feature-package-structure">Feature Package Structure</h1>
+
+<p>Each feature is fully self-contained:</p>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Package/
+├── Package.swift
+├── Sources
+│   ├── Concurrent/
+│   │   ├── Models/ (Sendable)
+│   │   └── Service.swift (actor)
+│   │
+│   └── Main/ (UI layer)
+│       ├── Views/
+│       ├── PackageCoordinator.swift
+│       └── PackageRoute.swift
+│
+└── Tests/
+</code></pre></div></div>
+
+<hr />
+
+<h2 id="harness">Harness</h2>
+
+<p>An harness is essential to accurate agentic contributions. The reference project include agentic harness documentation optimised for agents to accurately contribute features. As your project grows the harness must be maintained and optimised to remain effective</p>
+
+<hr />
+
+<h2 id="concurrency-model">Concurrency Model</h2>
+
+<p>Swift Structured Concurrency can be difficult to adopt correctly, but when used well it provides significant benefits in predictability, stability and UI responsiveness.
+Each feature package is split into two logical layers:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Main</code> → <code class="language-plaintext highlighter-rouge">@MainActor</code> UI layer</li>
+  <li><code class="language-plaintext highlighter-rouge">Concurrent</code> → isolated concurrency layer</li>
+</ul>
+
+<p>This provides a clear separation between:</p>
+
+<ul>
+  <li>UI logic</li>
+  <li>Asynchronous / concurrent operations</li>
+</ul>
+
+<p>Example responsibilities:</p>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">Main</code>:
+    <ul>
+      <li>Views</li>
+      <li>Coordinators</li>
+      <li>Routing logic</li>
+    </ul>
+  </li>
+  <li><code class="language-plaintext highlighter-rouge">Concurrent</code>:
+    <ul>
+      <li>Services (<code class="language-plaintext highlighter-rouge">actor</code>)</li>
+      <li>Models (<code class="language-plaintext highlighter-rouge">Sendable</code>)</li>
+      <li>Other actors</li>
+    </ul>
+  </li>
+</ul>
+
+<hr />
+
+<h1 id="benefits">Benefits</h1>
+
+<ul>
+  <li>Scalability through clear module boundaries</li>
+  <li>Parallel development across agent-assisted teams</li>
+  <li>Faster CI by testing only affected packages</li>
+  <li>Single <code class="language-plaintext highlighter-rouge">.xcodeproj</code> (no <code class="language-plaintext highlighter-rouge">.xcworkspace</code>)</li>
+  <li>Agent-friendly, deterministic architecture</li>
+</ul>
+
+<hr />
+
+<h2 id="dependency-management-recommendation">Dependency Management Recommendation</h2>
 
 <p>Avoid using:</p>
 
@@ -111,101 +207,6 @@ First, agentic coding will be responsible for the majority of code written. This
 
 <hr />
 
-<h1 id="project-structure">Project Structure</h1>
-
-<p>App.swift only contains enough code to hand off the the first feature package which handles the entry/launch functionality before routing to the next package</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Xcode Project
-├── App
-│   └── App.swift
-│
-├── Packages
-│   ├── Feature Packages
-│   └── ...
-│
-├── Package Dependencies
-│   ├── Common Packages (local + remote)
-│   ├── ...
-│   ├── 3rd Party Packages
-│   └── ...
-│
-├── AGENTS.md
-└── Harness/
-</code></pre></div></div>
-
-<hr />
-
-<h1 id="feature-package-structure">Feature Package Structure</h1>
-
-<p>Each feature is fully self-contained:</p>
-
-<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Package/
-├── Package.swift
-├── Sources
-│   ├── Concurrent/
-│   │   ├── Models/ (Sendable)
-│   │   └── Service.swift (actor)
-│   │
-│   └── Main/ (UI layer)
-│       ├── Views/
-│       ├── PackageCoordinator.swift
-│       └── PackageRoute.swift
-│
-└── Tests/
-</code></pre></div></div>
-
-<hr />
-
-<h2 id="concurrency-model">Concurrency Model</h2>
-
-<p>Swift Structured Concurrency can be difficult to adopt correctly, but when used well it provides significant benefits in predictability, correctness, and stability.
-Each feature package is split into two logical layers:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">Main</code> → <code class="language-plaintext highlighter-rouge">@MainActor</code> UI layer</li>
-  <li><code class="language-plaintext highlighter-rouge">Concurrent</code> → isolated concurrency layer</li>
-</ul>
-
-<p>This provides a clear separation between:</p>
-
-<ul>
-  <li>UI logic</li>
-  <li>Asynchronous / concurrent operations</li>
-</ul>
-
-<p>Example responsibilities:</p>
-
-<ul>
-  <li><code class="language-plaintext highlighter-rouge">Main</code>:
-    <ul>
-      <li>Views</li>
-      <li>Coordinators</li>
-      <li>Routing logic</li>
-    </ul>
-  </li>
-  <li><code class="language-plaintext highlighter-rouge">Concurrent</code>:
-    <ul>
-      <li>Models (<code class="language-plaintext highlighter-rouge">Sendable</code>)</li>
-      <li>Services (<code class="language-plaintext highlighter-rouge">actor</code>)</li>
-      <li>Other actors</li>
-    </ul>
-  </li>
-</ul>
-
-<hr />
-
-<h1 id="benefits">Benefits</h1>
-
-<ul>
-  <li>Scalability through clear module boundaries</li>
-  <li>Parallel development across agent-assisted teams</li>
-  <li>Faster CI by testing only affected packages</li>
-  <li>Single <code class="language-plaintext highlighter-rouge">.xcodeproj</code> (no <code class="language-plaintext highlighter-rouge">.xcworkspace</code>)</li>
-  <li>Agent-friendly, deterministic architecture</li>
-</ul>
-
-<hr />
-
 <h1 id="reference-project">Reference Project</h1>
 
 <p>Explore the setup of the thin project, feature packages and the inter-package navigation with this reference project.</p>
@@ -213,6 +214,10 @@ Each feature package is split into two logical layers:</p>
 <p>Included is a harness to allow agents to contribute features while adhering to the project’s architectral patterns.</p>
 
 <p><a href="https://github.com/fraserscottmorrison/spm-modular-programming">github.com/fraserscottmorrison/spm-modular-programming</a></p>
+
+<video width="640" height="480" controls="" loop="" muted="" autoplay="">
+    <source src="https://github.com/user-attachments/assets/c88de97b-16a3-45b0-bc07-78c12628c2a9" />
+</video>
 
 <p>Google provides an excellent reference Android project for a similarly modular architecture utilising gradle</p>
 
